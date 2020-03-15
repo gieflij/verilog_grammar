@@ -1,0 +1,20 @@
+//4 to 1 multiplexer using case
+module mux4_to_1(out, i0, i1, i2, i3, s1, s0);
+
+output out;
+input i0, i1, i2, i3;
+input s1, s0;
+reg out;
+
+always @(s1 or s0 or i0 or i2 or i3)
+//always @(*)로 해도 될 듯
+case({s1,s0}) //제어 신호의 연결을 기초로 한 스위치
+
+	2'd0 : out = i0;
+	2'd1 : out = i1;
+	2'd2 : out = i2;
+	2'd3 : out = i3;
+	default : $display("Invalid control siganls");
+endcase
+
+endmodule

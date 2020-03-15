@@ -1,0 +1,31 @@
+//모듈 dummy1 의 시간 척도
+`timescale 100ns / 1ns
+
+module dummy1;
+
+reg toggle;
+initial
+	toggle = 1'b0;
+
+//5단위 시간마다 toggle 레지스터를 바꿈
+//5단위 시간은 500ns = 0.5us
+always #5
+	begin
+		toggle = ~toggle;
+		$display("%d, In %m toggle = %d", $time, toggle);
+	end
+endmodule
+
+`timescale 1us/10ns
+module dummy2;
+
+initial
+	toggle = 1'b0;
+
+//5단위 시간 = 5us = 5000ns
+always #5
+	begin
+		toggle = ~toggle;
+		$display("%d, In %m toggle = %d", $time, toggle);
+	end
+endmodule

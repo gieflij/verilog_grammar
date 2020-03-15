@@ -1,0 +1,43 @@
+//repeat loop
+
+//0부터 127까지 증가시키고 출력
+integer count;
+
+initial
+begin
+	count = 0;
+	repeat(128)
+	begin
+		$display("Count = %d", count);
+		count = count + 1;
+	end
+end
+
+//데이터 버퍼 모듈의 에
+//데이터 시작 신호를 받은 후 다음 8 사이클 동안 데이터 읽음
+
+module data_buffer(data_start, data, clock);
+
+parameter cycles = 8;
+input data_start;
+input [15:0] data;
+input clock;
+
+reg [15:0] data;
+integer i;
+
+always @(posedge clock)
+begin
+	if(data_start)
+	begin
+		i = 0;
+		repeat(cycles)
+		begin
+			@(posedge clock) buffer[i] = data;
+			
+			i = i + 1;
+		end
+	end
+end
+
+endmodule

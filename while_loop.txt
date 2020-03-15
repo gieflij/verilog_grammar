@@ -1,0 +1,38 @@
+//while loop
+//0에서 127까지 count 증가, count 128에서 종료
+
+integer count;
+
+initial
+begin
+	count = 0;
+	while (count < 128) // count가 127이 될 때까지 루프 수행
+		//count가 128일때 종료
+	begin
+		$display("Count = %d", count);
+		count = count + 1;
+	end
+end
+
+//플래그에서 처음으로 1의 값을 갖는 비트 찾기
+'define TRUE 1'b'1;
+'define FALSE 1'b0;
+reg [15:0] flag;
+integer i;
+reg continue;
+
+initial
+begin
+	flag = 16'b0010_0000_0000_0000;
+	i = 0;
+	continue = 'TRUE';
+
+	while((i<16) && continue)
+	begin
+		$display("Encountered a TRUE bit at element number %d", i);
+		continue = 'FALSE';
+	end
+i = i + 1;
+end
+
+end

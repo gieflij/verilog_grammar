@@ -1,0 +1,83 @@
+//4비트 리플 캐리 카운터는 T f/f 4개로 구성
+//T f/f은 D f/f과 한 개의 inverter로 구성
+//negative edge triggered D f/f with clear
+//데이터플로우 문장을 이용한 top-down 설계
+
+//ripple counter
+module counter(Q, clock, clear);
+
+output [3:0] Q;
+input clock, clear;
+
+//T f/f
+T_FF tff0(Q[0], clock, clear);
+T_FF tff1(Q[1], Q[0], clear);
+T_FF tff2(Q[2], Q[1], clear);
+T_FF tff3(Q[3], Q[2], clear);
+
+endmodule
+
+//edge T f/f
+module T_FF(q,clk,clear);
+
+output q;
+input clk, clear;
+
+//q는 피드백됨, qbar는 필요하지 않으므로 연결하지 않음
+//~q는 D f/f 상에서 d에 연결됨
+
+edge_dff ff1(q, , ~q, clk, clear);
+
+endmodule
+
+//edge D f/f
+module edge_dff(q, qbar,d, clk, clear);
+
+output q, qbar;
+input d, clk, clear;
+
+wire s, sbar, r, rbar, cbar;
+
+assign cbar = ~clear;
+
+//input latch
+assign sbar = ~(rbar & s), s= ~(sbar & cbar & ~clk), r = ~(rbar & clk & s), rbar = ~(r & cbar & d);
+
+//output latch
+assign q = ~ (s & qbar), qbar = ~(q & r & cbar);
+
+endmodule
+
+//stimulus module
+module stimulus;
+
+reg CLOCK, CLEAR;
+wire [3:0] Q;
+
+initial
+	$monitor($time, " Count Q = %b Clear = %b", Q[3:0], CLEAR);
+
+counter c1(Q, CLOCK, CLEAR);
+
+//simulation
+initial
+begin
+	CLEAR = 1'b1;
+	#34 CLEAR = 1'b0;
+	#200 CLEAR = 1'b1;
+	#50 CLEAR = 1'b0;
+end
+
+initial
+begin
+	CLOCK = 1'b0;
+	forever #10 CLOCK = ~CLOCK;
+end
+
+//end simulation
+initial
+begin
+	#400 $finish;
+end
+
+endmodule

@@ -1,0 +1,27 @@
+//두 N-비트 버스의 비트 단위 xor 연산의 모듈 생성
+module bitwise_xor(out, i0, i1);
+parameter N = 32;
+
+output [N-1:0] out;
+input [N-1:0] i0, i1;
+
+//임시 루프 변수 선언. 이 변수는 블록 생성에서만 사용
+//시뮬레이션 하는 동안에는 이 변수는 존재하지 않음
+genvar j;
+
+//단일 루프 비트 단위 연산 xor 생성
+generate for(j=0; j<N; j=j+1) begin: xor_loop
+	xor g1(out[j],i0[j], i1[j]);
+	end
+endgenerate
+
+//always 블록을 이용하여 xor 게이트를 대신하면
+/*
+reg [N-1:0] out;
+generate for(j=0;j<N;j=j+1) begin : bit
+	always @(i0[j] or i1[j]) out[j] = i0[j]^i1[j];
+	end
+endgenerate
+*/
+
+endmodule

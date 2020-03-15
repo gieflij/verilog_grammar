@@ -1,0 +1,28 @@
+//VCD(값 변환 덤프) 파일 시스템 태스크
+// VCD 팡리 이름을 지정하지 않으면 시뮬레이터가 기본값으로 이름을 할당
+//$dumpfile과 $dumpvars는 보통 시뮬레이션 초반에 지정
+//$dumpon과 $dumpoff는 시뮬레이션 중에 덤프 과정 제어
+
+initial
+	$dumpfile("myfile.dmp"); // myfile.dmp로 덤프된 시뮬레이션 정보
+
+initial
+	$dumpvars;//인수가 없을 경우 모든 신호를 덤프
+initial
+	$dumpvars(1,top); //top 아래 한 층을 덤프한다
+			  //top에 의해 파생된 모듈 내의 신호는 덤프하지 않는다
+
+initial
+	$dumpvars(2, top.m1); // top 아래의 2개의 계층 덤프
+initial
+	$dumpvars(0, top.m1); //0은 top.m1 아래의 전체 계층을 덤프
+
+initial
+begin
+	$dumpon; //덤프 시작
+	#100000 $dumpoff; //100,000 단위 시간 후 덤프 종료
+end
+
+//체크 포인트 생성, 모든 VCD 변수의 현재 값을 덤프
+initial
+	$dumpall;

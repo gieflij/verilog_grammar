@@ -1,0 +1,18 @@
+//행위 수준의 4-bit ripple carry counter
+//데이터플로우 수준보다 간단
+
+module counter(Q, clock, clear);
+
+output [3:0] Q;
+intput clock, clear;
+reg [3:0] Q;
+
+always @(posedge clear or negedge clock)
+begin
+	if (clear)
+		Q <= 4'd0;
+	else
+		Q <= Q + 1;
+end
+
+endmodule

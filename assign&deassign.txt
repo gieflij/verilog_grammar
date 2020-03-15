@@ -1,0 +1,27 @@
+//절차적 연속할당
+//assign & deassign 이용
+//Verilog HDL에서 assign & deassign을 이용은 추천되지 않는 코딩방식
+module edge_dff(q, qbar, d, clk, reset);
+
+output q,qbar;
+input d,clk,reset;
+reg q,qbar;
+
+always @(negedge clk)
+begin
+	q = d;
+	qbar = ~d;
+end
+
+always @(reset)
+	if(reset)
+	begin
+		assign q = 1'b0;
+		assign qbar = 1'b1;
+	end
+	else
+	begin
+		deassign q;
+		deassign qbar;
+	end
+endmodule

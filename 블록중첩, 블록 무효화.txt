@@ -1,0 +1,32 @@
+//블록 형태 3가지
+//#1 중첩된 블록
+initial
+begin
+	x = 1'b0;
+	fork
+		#5 y = 1'b1;
+		#10 z = {x,y};
+	join
+	#20 w = {y,x};
+end
+
+//명명된 블록의 무효화
+//플래그에서 처음으로 1값을 갖는 비트를 찾는다
+reg [15:0] flag;
+integer i;
+
+initial
+begin
+	flag = 16'b 0010_0000_0000_0000;
+	i = 0;
+	begin : block1
+	while(i < 16)
+		begin
+			if(flag[i])
+			begin
+				$display("Encountered a TRUE bit at element number %d", i);
+				disable block1; //1값을 갖는 비트를 찾았기 때문에 block1 무효화
+			end
+		end
+	end
+end

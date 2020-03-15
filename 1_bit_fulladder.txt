@@ -1,0 +1,15 @@
+//1_bit_fulladder
+module fulladd(sum, c_out, a, b, c_in);
+
+output sum, c_out;
+input a, b, c_in;
+
+xor(s1, a, b);
+and(c1, a, b);
+
+xor(sum, s1, c_in);
+and(c2, s1, c_in);
+
+xor(c_out, c1, c2);
+
+endmodule

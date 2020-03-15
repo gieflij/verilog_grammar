@@ -1,0 +1,34 @@
+//procedural assignments
+//blocking
+reg x,y,z;
+reg [15:0] reg_a, reg_b;
+integer count;
+
+initial
+begin
+	x = 0; y=1; z=1;
+	count = 0;
+	reg_a = 16'b0; reg_b=reg_a;
+	
+	#15 reg_a[2] = 1'b1;
+	#10 reg_b [15:13] = {x,y,z};
+	count = count + 1;
+end
+
+//nonblocking
+reg x,y,z;
+reg[15:0] reg_a, reg_b;
+integer count;
+
+initial
+begin
+	//x=0;에서부터 reg_b = reg_a;까지는 0ns에 순차적으로 수행됨
+	x =0; y=1; z=1;
+	count = 0;
+	reg_a = 16'b0; reg_b = reg_a;
+	
+	reg_a[2] <= #15 1'b1; //15ns 뒤에 수행
+	reg_b[15:13] <= #10 {x,y,z}; //10ns 뒤에 수행
+	count <= count+1; //지연없이 수행(0ns)
+end
+//"<="는 nonblocking 할당의 문맥에서는 할당 연산자로 해석됨

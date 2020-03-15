@@ -1,0 +1,18 @@
+//forever loop
+//clock 생성
+//always 블록 대신 forever loop 사용
+
+reg clock;
+
+initial
+begin
+	clock = 1'b0;
+	forever #10 clock = ~clock; // 20ns 주기를 가진 clk
+end
+
+//매 클럭의 상승 에지에서 두 개의 레지스터가 동기화를 이룸
+reg clock;
+reg x,y;
+
+initial
+	forever @(posedge clock) x = y;

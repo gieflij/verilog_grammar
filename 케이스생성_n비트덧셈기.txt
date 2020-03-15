@@ -1,0 +1,23 @@
+//케이스 생성
+//N-bit 덧셈기의 생성모듈
+module adder(co, sum, a0, a1, ci);
+
+parameter N = 4;
+
+output [N-1:0] sum;
+output co;
+input [N-1:0] a0, a1;
+input ci;
+
+//버스의 폭에 의해 적합한 덧셈기가 파생되고
+//파생 시에 재정의 가능한 파라미터 N에 의해 버스의 폭 결정
+generate
+case (N)
+	1: adder_1bit adder1(co, sum, a0, a1, ci); //1 bit 구현
+	2: adder_2bit adder2(co, sum, a0, a1, ci); //2 bit 구현
+	//기본은 N-bit full adder
+	default : adder_cla # (N) adder3(co, sum, a0, a1, ci);
+endcase
+endgenerate
+
+endmodule

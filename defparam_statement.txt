@@ -1,0 +1,21 @@
+module hello_world;
+parameter id_num = 0;
+initial
+	$display("Display hellow_world id number = %d", id_num);
+endmodule
+
+module top;
+
+defparam w1.id_num = 1, w2.id_num = 2;
+
+hello_world w1();
+hello_world w2();
+
+endmodule
+
+//ANSI C style Parameter Declaration
+module hello_world #(parameter id_num = 0);
+
+initial
+	$display("Displaying hello_world id number = %d", id_num);
+endmodule
